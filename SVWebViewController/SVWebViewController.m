@@ -36,7 +36,7 @@
 
 @implementation SVWebViewController
 
-@synthesize availableActions;
+@synthesize availableActions, titleView;
 
 @synthesize URL, mainWebView;
 @synthesize backBarButtonItem, forwardBarButtonItem, refreshBarButtonItem, stopBarButtonItem, actionBarButtonItem, pageActionSheet;
@@ -114,6 +114,13 @@
     return pageActionSheet;
 }
 
+- (void)setTitleView:(UIView *)aTitleView
+{
+    [titleView release];
+    titleView = [aTitleView retain];
+    self.navigationItem.titleView = titleView;
+}
+
 #pragma mark - Initialization
 
 - (id)initWithAddress:(NSString *)urlString {
@@ -133,6 +140,8 @@
 #pragma mark - Memory management
 
 - (void)dealloc {
+    [titleView release];
+    
     mainWebView.delegate = nil;
     [mainWebView release];
     
@@ -162,6 +171,8 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
     [self updateToolbarItems];
+    if (self.titleView)
+        self.navigationItem.titleView = self.titleView;
 }
 
 - (void)viewDidUnload {
@@ -293,7 +304,12 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
-    self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    NSString *titleString = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    self.navigationItem.title = titleString;
+    if ([self.titleView respondsToSelector:@selector(setText:)]) {
+        [self.titleView performSelector:@selector(setText:) withObject:titleString];
+        [self.titleView sizeToFit];
+    }
     [self updateToolbarItems];
 }
 

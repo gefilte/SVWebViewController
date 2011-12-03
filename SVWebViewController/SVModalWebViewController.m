@@ -18,7 +18,10 @@
 
 @implementation SVModalWebViewController
 
-@synthesize barsTintColor, availableActions, webViewController;
+@synthesize barsTintColor, webViewController;
+
+// These delegate to the ViewController
+@dynamic availableActions, titleView;
 
 #pragma mark - Initialization
 
@@ -43,6 +46,21 @@
     [super viewWillAppear:animated];
     
     self.navigationBar.tintColor = self.toolbar.tintColor = self.barsTintColor;
+}
+
+- (UIView *)titleView
+{
+    return self.webViewController.titleView;
+}
+
+- (void)setTitleView:(UIView *)newTitleView
+{
+    self.webViewController.titleView = newTitleView;
+}
+
+- (SVWebViewControllerAvailableActions)availableActions
+{
+    return self.webViewController.availableActions;
 }
 
 - (void)setAvailableActions:(SVWebViewControllerAvailableActions)newAvailableActions {

@@ -25,5 +25,6 @@ typedef NSUInteger SVWebViewControllerAvailableActions;
 
 @property (nonatomic, retain) UIColor *barsTintColor;
 @property (nonatomic, assign) SVWebViewControllerAvailableActions availableActions;
+@property (nonatomic, retain) UIView *titleView;
 
 @end

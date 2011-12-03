@@ -16,5 +16,6 @@
 - (id)initWithURL:(NSURL*)URL;
 
 @property (nonatomic, assign) SVWebViewControllerAvailableActions availableActions;
+@property (nonatomic, retain) UIView *titleView;
 
 @end
